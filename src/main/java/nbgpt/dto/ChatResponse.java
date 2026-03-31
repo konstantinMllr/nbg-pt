@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package nbgpt.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package nbgpt.dto;
 
 import java.util.List;
 

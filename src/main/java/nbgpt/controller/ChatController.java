@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package nbgpt.controller;
 
-import com.example.demo.service.GraphService;
-import com.example.demo.service.LlamaClient;
+import nbgpt.service.GraphService;
+import nbgpt.service.LlamaClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;

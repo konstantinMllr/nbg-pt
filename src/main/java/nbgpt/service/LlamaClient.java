@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package nbgpt.service;
 
-import com.example.demo.dto.ChatRequest;
-import com.example.demo.dto.ChatResponse;
-import com.example.demo.dto.EmbeddingRequest;
-import com.example.demo.dto.EmbeddingResponse;
+import nbgpt.dto.ChatRequest;
+import nbgpt.dto.ChatResponse;
+import nbgpt.dto.EmbeddingRequest;
+import nbgpt.dto.EmbeddingResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package nbgpt.service;
 
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
