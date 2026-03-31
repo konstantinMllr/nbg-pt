@@ -1,40 +1,14 @@
-# Einmalimport JSON-LD -> Neo4j
+# NBG-PT
 
-Dieses Skript importiert Datensatz-Metadaten von
-`https://nuernberg.bydata.de/api/hub/repo/datasets` nach Neo4j.
+NBG-PT ist eine Webanwendung, mit der sich der offene Datenbestand der Stadt Nürnberg über einfache Textanfragen durchsuchen lässt.  
+*(Quelle der Daten: [BayernData Nürnberg](https://nuernberg.bydata.de/?locale=de))*
 
-## Enthalten
+## Aufbau des Projekts
 
-- `import_jsonld_to_neo4j.py`: Einmaliger Importer
-- `requirements.txt`: Python-Abhaengigkeiten
+Das Projekt besteht aus zwei Hauptteilen:
 
-## Installation
+- **Datenvorbereitung:**  
+  Python-Skripte, die Metadaten zu den verfügbaren Datensätzen herunterladen und so in einer Datenbank aufbereiten, dass sie durchsuchbar werden.
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-## Dry-Run (ohne Neo4j Schreibzugriff)
-
-```bash
-python3 import_jsonld_to_neo4j.py --dry-run
-```
-
-## Import nach Neo4j
-
-```bash
-python3 import_jsonld_to_neo4j.py \
-  --neo4j-uri bolt://localhost:7687 \
-  --neo4j-user neo4j \
-  --neo4j-password schwanzer \
-  --distribution-mode node
-```
-
-`--distribution-mode` Optionen:
-
-- `list`: speichert `access_urls` als Liste auf `Dataset`
-- `node`: erstellt `(:Distribution {accessURL})` und `(:Dataset)-[:HAS_DISTRIBUTION]->(:Distribution)`
-- `both`: macht beides
-
+- **Webanwendung:**  
+  Das Kernstück ist ein Chat-Interface (Frontend & Backend). Wenn ein Nutzer eine Frage stellt, sucht das System die passenden Informationen aus der Datenbank heraus. Ein KI-Modell liest diese Informationen und formuliert daraus eine direkte, verständliche Antwort für den Nutzer.
