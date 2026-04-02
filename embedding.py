@@ -46,10 +46,10 @@ def update_embeddings(driver, client):
     print("Vektorisierung abgeschlossen!")
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate embeddings for Neo4j nodes")
-    parser.add_argument("--neo4j-uri", default="bolt://localhost:7687", help="Neo4j URI")
+    parser.add_argument("--neo4j-uri", default="bolt://0.0.0.0:7687", help="Neo4j URI")
     parser.add_argument("--neo4j-user", default="neo4j", help="Neo4j Username")
     parser.add_argument("--neo4j-password", required=True, help="Neo4j Password")
-    parser.add_argument("--api-base-url", default="http://localhost:8082/v1", help="OpenAI Compatible API Base URL")
+    parser.add_argument("--api-base-url", default="http://0.0.0.0:8082/v1", help="OpenAI Compatible API Base URL")
     args = parser.parse_args()
 
     client = OpenAI(

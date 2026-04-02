@@ -174,7 +174,7 @@ def ingest_dataset(tx, d: dict):
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Bayern Open Data → Neo4j Metadaten-Import")
-    parser.add_argument("--neo4j-uri", default="bolt://localhost:7687", help="Neo4j Bolt URI")
+    parser.add_argument("--neo4j-uri", default="bolt://0.0.0.0:7687", help="Neo4j Bolt URI")
     parser.add_argument("--neo4j-user", default="neo4j", help="Neo4j Username")
     parser.add_argument("--neo4j-password", required=True, help="Neo4j Password")
     parser.add_argument("--dry-run", action="store_true", help="Ohne Schreibzugriff")

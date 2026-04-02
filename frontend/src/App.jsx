@@ -8,9 +8,9 @@ function App() {
   const [inputVal, setInputVal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [displayedText, setDisplayedText] = useState('');
   
   const chatMessagesRef = useRef(null);
-
   const scrollToBottom = () => {
     if (chatMessagesRef.current) {
       chatMessagesRef.current.scrollTo({
@@ -24,6 +24,22 @@ function App() {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  useEffect(() => {
+    const fullText = 'Textanfragen über den OpenData Bestand der Stadt Nürnberg';
+    let currentIndex = 0;
+    
+    const typeInterval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setDisplayedText(fullText.substring(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typeInterval);
+      }
+    }, 50);
+    
+    return () => clearInterval(typeInterval);
+  }, []);
+
   const handleSend = async (overrideMsg) => {
     const textToSend = typeof overrideMsg === 'string' ? overrideMsg : inputVal;
     if (!textToSend.trim()) return;
@@ -35,7 +51,8 @@ function App() {
     setHasStarted(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const apiUrl = import.meta.env.VITE_API_URL || (isLocalHost ? 'http://127.0.0.1:8095' : 'https://api.nbg-pt.de');
       const response = await fetch(`${apiUrl}/api/chat/stream`, {
         method: 'POST',
         headers: {
@@ -115,7 +132,7 @@ function App() {
           {!hasStarted ? (
             <div className="center-content">
               <div className="hero-heading">NBG-PT</div>
-              <div className="hero-subheading">Textanfragen über den OpenData Bestand der Stadt Nürnberg</div>
+              <div className="hero-subheading">{displayedText}</div>
               
               <div 
                 className="example-query" 
@@ -168,7 +185,11 @@ function App() {
                 
                 {isLoading && (
                   <div className="message assistant loading">
-                    Denkt nach...
+                    <span className="loading-dots">
+                      <span className="dot"></span>
+                      <span className="dot"></span>
+                      <span className="dot"></span>
+                    </span>
                   </div>
                 )}
               </div>
@@ -209,7 +230,7 @@ function App() {
           <div className="footer-column">
             <h4 className="footer-heading">Quelle</h4>
             <a href="https://nuernberg.bydata.de/?locale=de" target="_blank" rel="noopener noreferrer">BayernData.Nuernberg</a>
-            <a href="https://github.com/konstantinMllr" target="_blank" rel="noopener noreferrer">GitHub Profil</a>
+            <a href="https://github.com/konstantinMllr/nbg-pt" target="_blank" rel="noopener noreferrer">GitHub Profil</a>
           </div>
           <div className="footer-column">
             <h4 className="footer-heading">Autor</h4>
