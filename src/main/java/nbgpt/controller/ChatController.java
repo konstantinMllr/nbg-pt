@@ -1,13 +1,18 @@
 package nbgpt.controller;
 
-import nbgpt.service.GraphService;
-import nbgpt.service.LlamaClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import nbgpt.service.GraphService;
+import nbgpt.service.LlamaClient;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -37,8 +42,14 @@ public class ChatController {
 
         String context = graphService.searchContext(vector);
 
-        String systemPrompt = "Du bist ein Assistent für offene Daten der Stadt Nürnberg. " +
-                "Nutze NUR den folgenden Kontext, um die Frage zu beantworten:\n" +
+        String systemPrompt = "Du bist ein präziser und hilfreicher Assistent für offene Daten der Stadt Nürnberg.\n" +
+                "Regeln:\n" +
+                "1. Beantworte NUR die konkret gestellte Frage.\n" +
+                "2. Fasse dich kurz und nenne keine unnötigen Details (etwa Datensätze, Wichtigkeit oder Relevanz-Scores), wenn nicht ausdrücklich danach gefragt wurde.\n" +
+                "3. Beachte: 'Bildung, Kultur und Sport' ist EINE einzige zusammenhängende Kategorie. Erfinde oder trenne keine Kategorienamen.\n" +
+                "4. Nutze AUSSCHLIESSLICH den folgenden Kontext, um die Frage zu beantworten:\n" +
+                "5. Beantworte nur fragen über den Datenbestand der Stadt Nürnberg bzw des Freistaats Bayern\n\n" +
+
                 context;
 
         return llamaClient.getChatCompletionStream(systemPrompt, userQuestion)
