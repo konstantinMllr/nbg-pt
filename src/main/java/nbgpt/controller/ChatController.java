@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.servlet.http.HttpServletRequest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import nbgpt.service.GraphService;
-import nbgpt.service.LlamaClient;
 import nbgpt.service.IpBlockingService;
+import nbgpt.service.LlamaClient;
 import reactor.core.publisher.Flux;
 
 @RestController
@@ -33,7 +33,16 @@ public class ChatController {
 
     @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Map<String, String>> askQuestion(HttpServletRequest httpRequest, @RequestBody Map<String, String> request) {
-        String clientIp = httpRequest.getRemoteAddr();
+        String clientIp = httpRequest.getHeader("CF-Connecting-IP");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+            clientIp = httpRequest.getHeader("X-Forwarded-For");
+        }
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+            clientIp = httpRequest.getRemoteAddr();
+        } else {
+            clientIp = clientIp.split(",")[0].trim();
+        }
+        
         String userQuestion = request.get("question");
 
         if (userQuestion == null || userQuestion.trim().isEmpty()) {
