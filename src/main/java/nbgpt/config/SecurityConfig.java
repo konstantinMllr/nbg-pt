@@ -13,7 +13,6 @@ public class SecurityConfig {
 
     private final IpBlockingService ipBlockingService;
     private final LlamaClient llamaClient;
-
     public SecurityConfig(IpBlockingService ipBlockingService, LlamaClient llamaClient) {
         this.ipBlockingService = ipBlockingService;
         this.llamaClient = llamaClient;
@@ -25,11 +24,11 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configure(http))
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
+                .antMatchers("/**").hasIpAddress("127.0.0.1")
+                .anyRequest().denyAll()
             )
             .addFilterBefore(new ContentModerationFilter(ipBlockingService, llamaClient), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 }
-

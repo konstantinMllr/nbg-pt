@@ -18,3 +18,6 @@ public class AppConfig {
         return WebClient.builder();
     }
 }
+
+# API Key for securing the backend
+api.key=ak_NBGPT_1a7d3e9c5b8f6g2h4j

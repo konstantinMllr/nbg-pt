@@ -56,7 +56,7 @@ function App() {
       const response = await fetch(`${apiUrl}/api/chat/stream`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ question: userMsg })
       });
