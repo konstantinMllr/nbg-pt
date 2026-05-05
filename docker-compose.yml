@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8095:8095"
+    environment:
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+      - NEO4J_URI=bolt://host.docker.internal:7687
+      - LLAMA_EMBEDDING_URL=http://host.docker.internal:8082/v1/embeddings
+      - LLAMA_CHAT_URL=http://host.docker.internal:8081/v1/chat/completions
+      
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

@@ -28,8 +28,7 @@ def update_embeddings(driver, client):
         print(f"Verarbeite {len(items)} Einträge...")
 
         for item in items:
-            mapped_type = "Kategorie" if item['type'] == "Category" else "Schlagwort"
-            text_to_embed = f"{mapped_type}:{item['text']}"
+            text_to_embed = item['text']
             
             print(f"Vektorisierung ({item['type']}): {text_to_embed}")
             try:

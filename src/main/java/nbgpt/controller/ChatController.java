@@ -63,15 +63,17 @@ public class ChatController {
             return Flux.just(Map.of("text", "Fehler beim Generieren der Embeddings"));
         }
 
-        String context = graphService.searchContext(vector);
+        String context = graphService.searchContext(vector, userQuestion);
 
         String systemPrompt = "Du bist ein präziser und hilfreicher Assistent für offene Daten der Stadt Nürnberg.\n" +
                 "Regeln:\n" +
                 "1. Beantworte NUR die konkret gestellte Frage.\n" +
-                "2. Fasse dich kurz und nenne keine unnötigen Details (etwa Datensätze, Wichtigkeit oder Relevanz-Scores), wenn nicht ausdrücklich danach gefragt wurde.\n" +
+            "2. Fasse dich kurz und nenne keine unnötigen technischen Details (z. B. Scores, Retrieval-Modus), wenn nicht explizit danach gefragt wurde.\n" +
                 "3. Beachte: 'Bildung, Kultur und Sport' ist EINE einzige zusammenhängende Kategorie. Erfinde oder trenne keine Kategorienamen.\n" +
-                "4. Nutze AUSSCHLIESSLICH den folgenden Kontext, um die Frage zu beantworten:\n" +
-                "5. Beantworte nur fragen über den Datenbestand der Stadt Nürnberg bzw des Freistaats Bayern\n\n" +
+            "4. Wenn der Kontext sehr viele Datensätze einer Kategorie enthält, gib eine strukturierte Übersicht (z. B. kurze Cluster/Unterthemen), statt alles einzeln auszuschreiben.\n" +
+            "5. Wenn der Kontext auf einen Fokusbegriff eingeschränkt wurde, antworte nur mit den dazu passenden Datensätzen.\n" +
+            "6. Nutze AUSSCHLIESSLICH den folgenden Kontext, um die Frage zu beantworten.\n" +
+            "7. Beantworte nur Fragen über den Datenbestand der Stadt Nürnberg bzw. des Freistaats Bayern.\n\n" +
 
                 context;
 

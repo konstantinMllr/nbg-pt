@@ -16,7 +16,7 @@ public class GraphService {
         this.neo4jClient = neo4jClient;
     }
 
-    public String searchContext(List<Double> queryVector) {
+    public String searchContext(List<Double> queryVector, String userQuestion) {
         List<String> allCategoryNames = List.of(
             "Regionen und Städte",
             "Umwelt",
